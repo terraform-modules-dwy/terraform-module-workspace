@@ -1,4 +1,4 @@
-name: "Version File Validation"
+name: "Terraform Version File Validation"
 on:
     workflow_call:
         inputs:
