@@ -48,7 +48,7 @@ jobs:
   module-publish:
     if: github.event_name == 'push' && github.ref == 'ref/head/main'
     uses: terraform-modules-dwy/terraform-module-workspace/.github/workflows/z05-tf-publish-module.yml@main
-    needs: [code-validation]
+    needs: [version-file-validation]
     with:
       module_path: terraform-modules
       module_name: ${{ needs.version-file-validation.outputs.module_name}}
