@@ -1,0 +1,19 @@
+name: "gcp vpc_network_module"
+on:
+  pull_request:
+    types: [opened, synchronize]
+    branches:
+      - main
+    paths:
+      - 'terraform-modules/gcp/vpc_network/**'
+  push:
+    branches:
+      - main
+    paths:
+      - 'terraform-modules/gcp/vpc_network/**'
+
+jobs:
+  module-creation:
+    uses: ./tf-module-creation-base.yml
+    with:
+      module_path: 'terraform-modules/gcp/vpc_network/'

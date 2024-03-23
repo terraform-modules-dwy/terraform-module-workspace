@@ -1,0 +1,10 @@
+{
+    "modules":[
+        {
+            "name": "vpc_network",
+            "version": "1.0.0",
+            "project" : "Cherans",
+            "cloud-provider": "gcp"
+        }
+    ]
+}

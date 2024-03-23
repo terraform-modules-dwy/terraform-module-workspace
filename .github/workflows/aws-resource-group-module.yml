@@ -1,0 +1,19 @@
+name: "aws resource_group_module"
+on:
+  pull_request:
+    types: [opened, synchronize]
+    branches:
+      - main
+    paths:
+      - 'terraform-modules/aws/resource_group/**'
+  push:
+    branches:
+      - main
+    paths:
+      - 'terraform-modules/aws/resource_group/**'
+
+jobs:
+  module-creation:
+    uses: ./tf-module-creation-base.yml
+    with:
+      module_path: 'terraform-modules/aws/resource_group/'

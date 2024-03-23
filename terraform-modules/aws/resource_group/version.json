@@ -1,0 +1,10 @@
+{
+    "modules":[
+        {
+            "name": "resource-group",
+            "version": "1.0.0",
+            "project" : "Pandiyas",
+            "cloud-provider": "aws"
+        }
+    ]
+}
