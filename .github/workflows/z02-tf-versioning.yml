@@ -87,7 +87,7 @@ jobs:
                 $cloud_provider = "${{steps.parse-version-file.outputs.module_platform}}"
                 if (( $cloud_provider -eq "azure") -or ($cloud_provider -eq "aws") -or ($cloud_provider -eq "gcp"))
                   {
-                    Write-Output $cloud_provider | "is a valid cloud provider."
+                    Write-Host $cloud_provider 'is a valid cloud provider.'
                   }
                 else
                   {
