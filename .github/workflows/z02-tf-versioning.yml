@@ -1,0 +1,96 @@
+name: "Version File Validation"
+on:
+    workflow_call:
+        inputs:
+            module_path:
+                description: 'Specifies the path for the root terraform module.'
+                type: string
+                required: true
+        outputs:
+            module_name:
+                description: "name of the module"
+                value: ${{jobs.extract-version-contents.outputs.module_name}}
+            version:
+                description: "name of the version"
+                value: ${{jobs.extract-version-contents.outputs.version}}
+            module_platform:
+                description: "name of the cloud providers"
+                value: ${{jobs.extract-version-contents.outputs.module_platform}}
+            project_name:
+                description: "name of the project"
+                value: ${{jobs.extract-version-contents.outputs.project_name}}
+
+jobs:
+    extract-version-contents:
+        runs-on: ubuntu-latest
+        outputs:
+            module_name: ${{steps.parse-version-file.outputs.module_name}}
+            version: ${{steps.parse-version-file.outputs.version}}
+            project_name: ${{steps.parse-version-file.outputs.project_name}}
+            module_platform: ${{steps.parse-version-file.outputs.module_platform}}
+        steps:
+            - name: Action Checkout
+              uses: actions/checkout@v3.0
+
+            - name: Validate version file
+              shell: pwsh
+              env:
+                file: ${{inputs.module_path}}/version.json
+              run: |
+                $versionFile = Test-path -path $env:file
+                if ($versionFile -eq $true)
+                  {
+                    Write-Output "version.json is present for the module ${{inputs.module_path}}"
+                  }
+                else
+                  {
+                    Write-error "version.json missing from ${{inputs.module_path}}"
+                  }
+            
+            - name: Parse version.json
+              id: parse-version-file
+              run: |
+                module_name=$(jq -r ' .modules[0].name' ${{inputs.module_path}}/version.json)
+                version=$(jq -r ' .modules[0].version' ${{inputs.module_path}}/version.json)
+                project_name=$(jq -r ' .modules[0].project' ${{inputs.module_path}}/version.json)
+                module_platform=$(jq -r ' .modules[0].cloud-provider' ${{inputs.module_path}}/version.json)
+                echo "module_name=$module_name" >> $GITHUB_OUTPUT
+                echo "version=$version" >> $GITHUB_OUTPUT
+                echo "project_name=$project_name" >> $GITHUB_OUTPUT
+                echo "module_platform=$module_platform" >> $GITHUB_OUTPUT
+
+            - name: Versioning Validation
+              shell: pwsh
+              run: |
+                $module_version = "${{steps.parse-version-file.outputs.version}}"
+                $module_version = $module_version -split '\.'
+                if ($module_version.Length -ne 3) {
+                    Write-error "Module versioning is not correct, it should have three decimal places , example version => 1.0.2"
+                }
+
+            - name: Project Validation
+              shell: pwsh
+              run: |
+                $project="${{steps.parse-version-file.outputs.project_name}}"
+                if (( $project -eq "Cholans") -or ($project -eq "Pandiyas") -or ($project -eq "Cherans"))
+                  {
+                    Write-Output "The Given Project is Valid"
+                  }
+                else 
+                  {
+                    Write-error "Given project is not acceptable. the acceptable projects are Cherans / Cholans / Pandiyas"
+                  }
+
+            - name: Module Platform Validation
+              shell: pwsh
+              run: |
+                $cloud_provider = "${{steps.parse-version-file.outputs.module_platform}}"
+                if (( $cloud_provider -eq "azure") -or ($cloud_provider -eq "aws") -or ($cloud_provider -eq "gcp"))
+                  {
+                    Write-Output $cloud_provider | "is a valid cloud provider."
+                  }
+                else
+                  {
+                    Write-error "Only azure or aws or gcp is acceptable cloud providers"
+                  }
+                

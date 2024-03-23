@@ -1,0 +1,19 @@
+name: "azure loganalytics-module"
+on:
+  pull_request:
+    types: [opened, synchronize]
+    branches:
+      - main
+    paths:
+      - 'terraform-modules/azure/loganalytics_workspace/**'
+  push:
+    branches:
+      - main
+    paths:
+      - 'terraform-modules/azure/loganalytics_workspace/**'
+
+jobs:
+  module-creation:
+    uses: ./z01-tf-module-creation-base.yml
+    with:
+      module_path: 'terraform-modules/azure/loganalytics_workspace/'

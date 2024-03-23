@@ -1,0 +1,78 @@
+name: Terraform Module Publish
+on:
+    workflow_call:
+        inputs:
+            module_path: 
+                required: true
+                description: 'path for the module'
+                type: string
+            module_name:
+                required: true
+                description: 'module name'
+                type: string
+            project_name: 
+                required: true
+                description: 'project name'
+                type: string
+            version:
+                required: true
+                description: 'version of module'
+                type: string
+            user_name:
+                required: true
+                description: 'username to push the code to remote repo'
+                type: string
+            user_email:
+                required: true
+                description: 'user emailto push the code to remote repo'
+                type: string
+            destination_repo:
+                required: true
+                description: 'destination repository'
+                type: string
+            destination_folder:
+                required: true
+                description: 'destination folder path'
+                type: string
+        secrets:
+            APP_ID:
+                description: 'Github application ID'
+                required: true
+            APP_PRIVATE_KEY:
+                description: 'Github application Private key'
+                required: true
+jobs:
+    terraform-module-publish:
+        runs-on: ubuntu-latest
+        environment: "tf-remote-publish"
+        defaults:
+            run:
+                shell: bash
+                working-directory: ${{inputs.module_path}}/${{inputs.module_name}}
+
+        steps:
+            - name: Action Checkout
+              uses: actions/checkout@3.3.0
+
+            - name: Create compressed artifact
+              run: zip -r ${{inputs.module_name}}_${{inputs.project_name}}_${{inputs.version}}.zip ./*
+
+            - name: Get Token
+              id: get_actions_token
+              uses: peter-murray/workflow-application-token-action@v2
+              with:
+                application_id: ${{secrets.APP_ID}}
+                application_private_key: ${{secrets.APP_PRIVATE_KEY}}
+                organization: terraform-modules-dwy
+
+            - name: Publish Code to Terraform Remote repo
+              uses: dmnemec/copy_file_to_another_repo_action@main
+              env:
+                API_TOKEN_GITHUB: ${{steps.get_actions_token.outputs.token}}
+              with:
+                source_file: terraform-modules/${{inputs.module_name}}_${{inputs.project_name}}_${{inputs.version}}.zip
+                destination_repo: ${{inputs.destination_repo}}
+                destination_folder: ${{inputs.destination_folder}}
+                user_email: ${{inputs.user_email}}
+                user_name: ${{inputs.user_name}}
+                commit_message: '${{inputs.module_name}}_${{inputs.project_name}}_${{inputs.version}} module is created in the terraform remote repository.'

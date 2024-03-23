@@ -1,0 +1,65 @@
+name: "tf-module-creation"
+on:
+  workflow_call:
+    inputs:
+      module_path: 
+        required: true
+        description: 'path for the module'
+        type: string
+jobs:
+  #01
+  version-file-validation:
+    uses: ./z02-tf-versioning.yml
+    if: ${{ always() }}
+    with:
+      module_path: ${{inputs.module_path}}
+
+  #02
+  code-validation:
+    uses: ./z03-tf-validation.yml
+    if: github.event_name == 'pull_request'
+    needs: [version-file-validation]
+    with:
+      module_path: terraform-modules/${{ needs.version-file-validation.outputs.module_name}}
+      destination_path: terraform-modules/${{ needs.version-file-validation.outputs.module_platform}}
+      repo_name: terraform-remote-modules
+      module_name: ${{ needs.version-file-validation.outputs.module_name}}
+      project_name: ${{ needs.version-file-validation.outputs.project_name}}
+      version: ${{ needs.version-file-validation.outputs.version}}
+      tf_version: latest #"v1.7.5" (Can mention version of terraform)
+    secrets:
+      APP_ID : ${{secrets.APP_ID}}
+      APP_PRIVATE_KEY: ${{secrets.APP_PRIVATE_KEY}}
+
+  #03
+  module-documentation:
+    uses: ./z04-tf-documentation.yml
+    if: github.event_name == 'pull_request'
+    needs: [code-validation]
+    with:
+      module_path : terraform-modules/${{ needs.version-file-validation.outputs.module_name}}
+      username: terraform-module-workspace
+      organization: terraform-modules-dwy
+    secrets:
+      APP_ID : ${{secrets.APP_ID}}
+      APP_PRIVATE_KEY: ${{secrets.APP_PRIVATE_KEY}}
+
+  #04
+  module-publish:
+    if: github.event_name == 'push' && github.ref == 'ref/head/main'
+    uses: ./z05-tf-publish-module.yml
+    needs: [code-validation]
+    with:
+      module_path: terraform-modules
+      module_name: ${{ needs.version-file-validation.outputs.module_name}}
+      project_name: ${{ needs.version-file-validation.outputs.project_name}}
+      version: ${{ needs.version-file-validation.outputs.version}}
+      user_name:
+      user_email:
+      destination_repo: terraform-modules-dwy/terraform-remote-modules
+      destination_folder: terraform-modules/${{ needs.version-file-validation.outputs.module_platform}}
+    secrets:
+      APP_ID : ${{secrets.APP_ID}}
+      APP_PRIVATE_KEY: ${{secrets.APP_PRIVATE_KEY}}
+
+     

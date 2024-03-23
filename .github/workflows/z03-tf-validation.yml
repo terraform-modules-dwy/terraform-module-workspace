@@ -1,0 +1,95 @@
+name: "Terraform Module Validation"
+on:
+    workflow_call:
+        inputs:
+            module_path:
+                description: 'path to the terraform module'
+                required: true
+                type: string
+            destination_path:
+                description: 'path to the terraform module to be created in destination path'
+                required: true
+                type: string
+            repo_name:
+                description: 'path to the repository in which remote module will be created'
+                required: true
+                type: string
+            module_name:
+                description: 'name of the terraform module'
+                required: true
+                type: string
+            project_name:
+                description: 'name of the current project'
+                required: true
+                type: string
+            version:
+                description: 'version of module'
+                required: true
+                type: string
+            tf_version:
+                description: 'terraform version'
+                required: true
+                type: string
+        secrets:
+            APP_ID:
+                description: 'Github application ID'
+                required: true
+            APP_PRIVATE_KEY:
+                description: 'Github application Private key'
+                required: true
+jobs:
+    terraform-module-validation:
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                shell: bash
+                working-directory: ${{inputs.module_path}}
+        
+        steps:
+            - name: Action Checkout
+              uses: actions/checkout@v3.3.0
+
+            - name: Get Token
+              id: get_actions_token
+              uses: peter-murray/workflow-application-token-action@v2
+              with:
+                application_id: ${{secrets.APP_ID}}
+                application_private_key: ${{secrets.APP_PRIVATE_KEY}}
+                organization: terraform-modules-dwy
+            
+            - name: Invoke API
+              id: invoke_api
+              shell: pwsh
+              env:
+                token: ${{steps.get_actions_token.outputs.token}}
+                repo: ${{inputs.repo_name}}
+                path: ${{inputs.destination_path}}/${{inputs.module_name}}_${{inputs.project_name}}_${{inputs.version}}
+              run: |
+                $url = "https://api.github.com/repos/terraform-modules-dwy/$env:repo/contents/$env:path"
+                Invoke-RestMethod $url -Headers @{Authorization="Token $env:token"} -StatusCodeVariable statuscode -SkipHttpErrorCheck
+                if ($statuscode -eq 200)
+                  {
+                    Write-Error "Duplication of module creation, overwrite is not permitted , please update the version"
+                  }
+                else
+                  {
+                    Write-Output "Success, no duplicate module found"
+                  }
+            - name: Terraform Setup
+              uses: hashicorp/setup-terraform@v2.0.3
+              with:
+                terraform_version: ${{inputs.tf_version}}
+
+            - name: Validate Formating
+              id: tf-format
+              run: terraform fmt --check
+              continue-on-error: false
+
+            - name: Initialize Terraform
+              id: tf-initialize
+              run: terraform init -backend=false
+
+            - name: Validate Code
+              id: tf-validate
+              run: terraform validate
+              continue-on-error: false
