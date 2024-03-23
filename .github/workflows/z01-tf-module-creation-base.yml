@@ -9,14 +9,14 @@ on:
 jobs:
   #01
   version-file-validation:
-    uses: terraform-modules-dwy/terraform-module-workspace/.github/workflows/z02-tf-versioning@main
+    uses: terraform-modules-dwy/terraform-module-workspace/.github/workflows/z02-tf-versioning.yml@main
     if: ${{ always() }}
     with:
       module_path: ${{inputs.module_path}}
 
   #02
   code-validation:
-    uses: terraform-modules-dwy/terraform-module-workspace/.github/workflows/z03-tf-validation@main
+    uses: terraform-modules-dwy/terraform-module-workspace/.github/workflows/z03-tf-validation.yml@main
     if: github.event_name == 'pull_request'
     needs: [version-file-validation]
     with:
@@ -33,7 +33,7 @@ jobs:
 
   #03
   module-documentation:
-    uses: terraform-modules-dwy/terraform-module-workspace/.github/workflows/z04-tf-documentation@main
+    uses: terraform-modules-dwy/terraform-module-workspace/.github/workflows/z04-tf-documentation.yml@main
     if: github.event_name == 'pull_request'
     needs: [code-validation]
     with:
@@ -47,7 +47,7 @@ jobs:
   #04
   module-publish:
     if: github.event_name == 'push' && github.ref == 'ref/head/main'
-    uses: ./z05-tf-publish-module.yml
+    uses: terraform-modules-dwy/terraform-module-workspace/.github/workflows/z05-tf-publish-module.yml@main
     needs: [code-validation]
     with:
       module_path: terraform-modules
