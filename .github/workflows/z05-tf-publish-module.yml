@@ -52,7 +52,7 @@ jobs:
 
         steps:
             - name: Action Checkout
-              uses: actions/checkout@3.3.0
+              uses: actions/checkout@v4
 
             - name: Create compressed artifact
               run: zip -r ${{inputs.module_name}}_${{inputs.project_name}}_${{inputs.version}}.zip ./*

@@ -30,7 +30,7 @@ jobs:
             module_platform: ${{steps.parse-version-file.outputs.module_platform}}
         steps:
             - name: Action Checkout
-              uses: actions/checkout@v3.0
+              uses: actions/checkout@v4
 
             - name: Validate version file
               shell: pwsh
