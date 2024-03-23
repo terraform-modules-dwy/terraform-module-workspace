@@ -9,14 +9,14 @@ on:
 jobs:
   #01
   version-file-validation:
-    uses: ./z02-tf-versioning.yml
+    uses: terraform-modules-dwy/terraform-module-workspace/.github/workflows/z02-tf-versioning@main
     if: ${{ always() }}
     with:
       module_path: ${{inputs.module_path}}
 
   #02
   code-validation:
-    uses: ./z03-tf-validation.yml
+    uses: terraform-modules-dwy/terraform-module-workspace/.github/workflows/z03-tf-validation@main
     if: github.event_name == 'pull_request'
     needs: [version-file-validation]
     with:
@@ -33,7 +33,7 @@ jobs:
 
   #03
   module-documentation:
-    uses: ./z04-tf-documentation.yml
+    uses: terraform-modules-dwy/terraform-module-workspace/.github/workflows/z04-tf-documentation@main
     if: github.event_name == 'pull_request'
     needs: [code-validation]
     with:
