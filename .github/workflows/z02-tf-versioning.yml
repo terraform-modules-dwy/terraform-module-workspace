@@ -53,7 +53,7 @@ jobs:
                 module_name=$(jq -r ' .modules[0].name' ${{inputs.module_path}}version.json)
                 version=$(jq -r ' .modules[0].version' ${{inputs.module_path}}version.json)
                 project_name=$(jq -r ' .modules[0].project' ${{inputs.module_path}}version.json)
-                module_platform=$(jq -r ' .modules[0].cloud-provider' ${{inputs.module_path}}version.json)
+                module_platform=$(jq -r ' .modules[0].cloudprovider' ${{inputs.module_path}}version.json)
                 echo "module_name=$module_name" >> $GITHUB_OUTPUT
                 echo "version=$version" >> $GITHUB_OUTPUT
                 echo "project_name=$project_name" >> $GITHUB_OUTPUT
