@@ -18,5 +18,5 @@ variable "location" {
 
 variable "tags" {
   default     = {}
-  description = "(Optional) A mapping of tags which should be Resource Group."
+  description = "(Optional) A mapping of tags for the RG."
 }
