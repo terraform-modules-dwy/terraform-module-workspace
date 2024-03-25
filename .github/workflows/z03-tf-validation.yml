@@ -40,6 +40,8 @@ on:
 jobs:
     terraform-module-validation:
         runs-on: ubuntu-latest
+        permissions:
+          actions: write
         defaults:
             run:
                 shell: bash
