@@ -18,3 +18,7 @@ jobs:
     uses: terraform-modules-dwy/terraform-module-workspace/.github/workflows/z01-tf-module-creation-base.yml@main
     with:
       module_path: 'terraform-modules/azure/resource_group/'
+    secrets:
+      APP_ID : ${{secrets.APP_ID}}
+      APP_PRIVATE_KEY: ${{secrets.APP_PRIVATE_KEY}}
+      
