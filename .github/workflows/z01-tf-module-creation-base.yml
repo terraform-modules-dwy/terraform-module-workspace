@@ -57,7 +57,7 @@ jobs:
     uses: terraform-modules-dwy/terraform-module-workspace/.github/workflows/z05-tf-publish-module.yml@main
     needs: [version-file-validation, module-documentation]
     with:
-      module_path: terraform-modules
+      module_path: ${{inputs.module_path}}
       module_name: ${{ needs.version-file-validation.outputs.module_name}}
       project_name: ${{ needs.version-file-validation.outputs.project_name}}
       version: ${{ needs.version-file-validation.outputs.version}}
