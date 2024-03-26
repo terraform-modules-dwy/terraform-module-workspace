@@ -5,5 +5,5 @@ output "name" {
 
 output "id" {
   value       = azurerm_resource_group.resource_group.id
-  description = "resource group identity to be known to the world."
+  description = "resource group identity block."
 }
