@@ -1,19 +1,22 @@
-# name: "aws resource_group_module"
-# on:
-#   pull_request:
-#     types: [opened, synchronize]
-#     branches:
-#       - main
-#     paths:
-#       - 'terraform-modules/aws/resource_group/**'
-#   push:
-#     branches:
-#       - main
-#     paths:
-#       - 'terraform-modules/aws/resource_group/**'
+name: "aws resource_group_module"
+on:
+  pull_request:
+    types: [opened, synchronize]
+    branches:
+      - main
+    paths:
+      - 'terraform-modules/aws/resource_group/**'
+  push:
+    branches:
+      - main
+    paths:
+      - 'terraform-modules/aws/resource_group/**'
 
-# jobs:
-#   module-creation:
-#     uses: terraform-modules-dwy/terraform-module-workspace/.github/workflows/z01-tf-module-creation-base.yml@main
-#     with:
-#       module_path: 'terraform-modules/aws/resource_group/'
+jobs:
+  module-creation:
+    uses: terraform-modules-dwy/terraform-module-workspace/.github/workflows/z01-tf-module-creation-base.yml@main
+    with:
+      module_path: 'terraform-modules/aws/resource_group/'
+    secrets:
+      APP_ID : ${{secrets.APP_ID}}
+      APP_PRIVATE_KEY: ${{secrets.APP_PRIVATE_KEY}}
