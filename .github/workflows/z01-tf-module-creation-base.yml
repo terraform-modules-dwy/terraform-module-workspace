@@ -42,7 +42,7 @@ jobs:
   module-documentation:
     uses: terraform-modules-dwy/terraform-module-workspace/.github/workflows/z04-tf-documentation.yml@main
     if: github.event_name == 'push' && github.ref == 'refs/head/main'
-    needs: [code-validation]
+    needs: [version-file-validation]
     with:
       module_path : terraform-modules/${{ needs.version-file-validation.outputs.module_name}}
       username: terraform-module-workspace
