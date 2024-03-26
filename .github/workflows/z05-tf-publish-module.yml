@@ -69,7 +69,7 @@ jobs:
               env:
                 API_TOKEN_GITHUB: ${{steps.get_actions_token.outputs.token}}
               with:
-                source_file: terraform-modules/${{inputs.module_name}}_${{inputs.project_name}}_${{inputs.version}}.zip
+                source_file: ${{inputs.module_name}}_${{inputs.project_name}}_${{inputs.version}}.zip
                 destination_repo: ${{inputs.destination_repo}}
                 destination_folder: ${{inputs.destination_folder}}
                 user_email: ${{inputs.user_email}}
