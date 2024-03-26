@@ -9,14 +9,14 @@ variable "name" {
 
 variable "location" {
   type        = string
-  description = "(Required) The Azure Region where the Resource Group should exist. Changing this forces a new Resource Group to be created."
+  description = "(Required) Azure Region where the Resource Group should exist. Changing this forces a new Resource Group to be created."
   validation {
     condition     = contains(["east-us", "west-us"], var.location)
-    error_message = "The resource group location should be only deploy"
+    error_message = "The resource group location is not given as mentioned. please verify"
   }
 }
 
 variable "tags" {
   default     = {}
-  description = "(Optional) A mapping of tags which should be assigned to Resource Group..."
+  description = "(Optional) tags specifying env."
 }
