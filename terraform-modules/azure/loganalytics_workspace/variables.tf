@@ -17,7 +17,7 @@ variable "sku_name" {
   type = string
   validation {
     condition     = contains(["Free", "Standard", "PerGB2018"], var.sku_name)
-    error_message = "The allowed SKU are Free,Standard and PerGB2018"
+    error_message = "The allowed SKU are Free,Standard and PerGB2018/"
   }
   description = " (Optional) Specifies the SKU of the Log Analytics Workspace. Possible values are Free, PerNode, Premium, Standard, Standalone, Unlimited, CapacityReservation, and PerGB2018 (new SKU as of 2018-04-03). Defaults to PerGB2018."
 }
