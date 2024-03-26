@@ -27,7 +27,7 @@ jobs:
     if: github.event_name == 'pull_request'
     needs: [version-file-validation]
     with:
-      module_path: terraform-modules/${{ needs.version-file-validation.outputs.module_name}}
+      module_path: ${{inputs.module_path}}
       destination_path: terraform-modules/${{ needs.version-file-validation.outputs.module_platform}}
       repo_name: terraform-remote-modules
       module_name: ${{ needs.version-file-validation.outputs.module_name}}
@@ -44,7 +44,7 @@ jobs:
     #if: github.event_name == 'push' && github.ref == 'refs/head/main'
     needs: [version-file-validation]
     with:
-      module_path : terraform-modules/${{ needs.version-file-validation.outputs.module_name}}
+      module_path : ${{inputs.module_path}}
       username: terraform-module-workspace
       organization: terraform-modules-dwy
     secrets:
