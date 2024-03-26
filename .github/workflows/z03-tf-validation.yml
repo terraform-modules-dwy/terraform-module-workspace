@@ -40,22 +40,22 @@ on:
 jobs:
     terraform-module-validation:
         runs-on: ubuntu-latest
-        #defaults:
-            #run:
-                #shell: bash
-                #working-directory: ${{inputs.module_path}}
+        defaults:
+            run:
+                shell: bash
+                working-directory: ${{inputs.module_path}}
         
         steps:
-            #- name: Action Checkout
-              #uses: actions/checkout@v3.3.0
+            - name: Action Checkout
+              uses: actions/checkout@v4
 
             - name: Get Token
               id: get_actions_token
-              uses: peter-murray/workflow-application-token-action@v2
+              uses: peter-murray/workflow-application-token-action@v3
               with:
                 application_id: ${{secrets.APP_ID}}
                 application_private_key: ${{secrets.APP_PRIVATE_KEY}}
-                #organization: terraform-modules-dwy
+                organization: terraform-modules-dwy
             
             - name: Invoke API
               id: invoke_api
