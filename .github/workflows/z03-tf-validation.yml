@@ -43,7 +43,7 @@ jobs:
         defaults:
             run:
                 shell: bash
-                working-directory: ${{inputs.module_path}}
+                #working-directory: ${{inputs.module_path}}
         
         steps:
             - name: Action Checkout
