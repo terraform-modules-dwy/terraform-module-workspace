@@ -41,8 +41,7 @@ jobs:
   #03
   module-documentation:
     uses: terraform-modules-dwy/terraform-module-workspace/.github/workflows/z04-tf-documentation.yml@main
-    if: github.ref == 'refs/head/main'
-    #github.event_name == 'push' &&
+    #if: github.event_name == 'push' && github.ref == 'refs/head/main'
     needs: [version-file-validation]
     with:
       module_path : terraform-modules/${{ needs.version-file-validation.outputs.module_name}}
@@ -54,8 +53,7 @@ jobs:
 
   #04
   module-publish:
-    if: github.ref == 'ref/head/main'
-    #github.event_name == 'push' &&
+    #if: github.event_name == 'push' && github.ref == 'ref/head/main'
     uses: terraform-modules-dwy/terraform-module-workspace/.github/workflows/z05-tf-publish-module.yml@main
     needs: [version-file-validation, module-documentation]
     with:
