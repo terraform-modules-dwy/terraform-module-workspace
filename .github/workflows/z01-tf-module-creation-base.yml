@@ -6,6 +6,13 @@ on:
         required: true
         description: 'path for the module'
         type: string
+    secrets:
+       APP_ID:
+         required: true
+         description: 'application ID'
+       APP_PRIVATE_KEY:
+         required: true
+         description: 'app private key'
 jobs:
   #01
   version-file-validation:
