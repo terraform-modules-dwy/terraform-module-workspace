@@ -53,7 +53,7 @@ jobs:
                 git-push-user-name: ${{inputs.username}}
 
             - name: Enable File Permissions
-              run: cd .git ; sudo chgrp -R docker . ; sudo chmod -R g_rwX . ; sudo find . -type d -exec chmod g+s '{}' + ; cd ..
+              run: cd .git ; sudo chgrp -R docker . ; sudo chmod -R g+rwX . ; sudo find . -type d -exec chmod g+s '{}' + ; cd ..
 
             - name: Push the file
               run: |
