@@ -41,7 +41,7 @@ jobs:
   #03
   module-documentation:
     uses: terraform-modules-dwy/terraform-module-workspace/.github/workflows/z04-tf-documentation.yml@main
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'push' && github.ref == 'refs/head/main'
     needs: [code-validation]
     with:
       module_path : terraform-modules/${{ needs.version-file-validation.outputs.module_name}}
@@ -55,14 +55,14 @@ jobs:
   module-publish:
     if: github.event_name == 'push' && github.ref == 'ref/head/main'
     uses: terraform-modules-dwy/terraform-module-workspace/.github/workflows/z05-tf-publish-module.yml@main
-    needs: [version-file-validation]
+    needs: [version-file-validation, module-documentation]
     with:
       module_path: terraform-modules
       module_name: ${{ needs.version-file-validation.outputs.module_name}}
       project_name: ${{ needs.version-file-validation.outputs.project_name}}
       version: ${{ needs.version-file-validation.outputs.version}}
-      user_name:
-      user_email:
+      user_name: yogeshwaran
+      user_email: yogeshwaran31081998@gmail.com
       destination_repo: terraform-modules-dwy/terraform-remote-modules
       destination_folder: terraform-modules/${{ needs.version-file-validation.outputs.module_platform}}
     secrets:
