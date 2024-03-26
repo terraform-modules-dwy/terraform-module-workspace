@@ -12,7 +12,9 @@ on:
     paths:
       - 'terraform-modules/azure/resource_group/**'
   workflow_dispatch:
-
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   module-creation:
     uses: terraform-modules-dwy/terraform-module-workspace/.github/workflows/z01-tf-module-creation-base.yml@main
