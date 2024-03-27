@@ -11,6 +11,7 @@ on:
       - main
     paths:
       - 'terraform-modules/azure/loganalytics_workspace/**'
+  workflow_dispatch:
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
