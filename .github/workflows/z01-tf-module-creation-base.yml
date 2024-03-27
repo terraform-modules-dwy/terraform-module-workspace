@@ -53,8 +53,8 @@ jobs:
 
   #04
   module-publish:
-    if: github.ref == 'ref/heads/main'
     uses: terraform-modules-dwy/terraform-module-workspace/.github/workflows/z05-tf-publish-module.yml@main
+    if: always()
     needs: [version-file-validation, module-documentation]
     with:
       module_path: ${{inputs.module_path}}
