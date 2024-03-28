@@ -18,7 +18,7 @@ variable "location" {
 
 variable "tags" {
   default     = {
-    "env"="development"
+    "env"="remote-module-rg"
   }
   description = "(Optional) tags for the resource group."
 }
