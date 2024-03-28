@@ -17,7 +17,7 @@
 | :---------------- | :------: 
 | z01-tf-module-creation-base.yml       |   it is the base pipeline from which the child workflows are called during the CI and CD.   | 
 | z02-tf-versioning.yml                 |   to extract the version files and pass it to successive workflows , here simple validation is also done.   | 
-| z03-tf-validation.yml                 |   here the terraform modules are validated and against terraform validate command to verify the compile time errors.  | 
+| z03-tf-validation.yml                 |   here the terraform modules are validated and against terraform validate command to verify the modules and use tfsec for security scanning.  | 
 | z04-tf-documentation.yml       |   this is to create the auto README.md file based on the variables and ouputs tf files.  | 
 | z05-tf-publish-module.yml      |   this is to publish the zipped module files into the terraform-remote-modules with specified version.   | 
 | __#cloud_provider_name#__-__#resourcename#__-module.yml     |   this pipeline are the base one which calls the *creation-base.yml file based on modular level with exact path.  | 
