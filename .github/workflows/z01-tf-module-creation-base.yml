@@ -26,6 +26,9 @@ jobs:
     uses: terraform-modules-dwy/terraform-module-workspace/.github/workflows/z03-tf-validation.yml@main
     if: github.event_name == 'pull_request'
     needs: [version-file-validation]
+    permissions:
+      contents: read
+      pull-requests: write
     with:
       module_path: ${{inputs.module_path}}
       destination_path: terraform-modules/${{ needs.version-file-validation.outputs.module_platform}}
