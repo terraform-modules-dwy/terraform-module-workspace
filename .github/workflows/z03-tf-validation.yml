@@ -44,7 +44,9 @@ jobs:
             run:
                 shell: bash
                 #working-directory: ${{inputs.module_path}}
-        
+        permissions:
+           contents: read
+           pull-requests: write
         steps:
             - name: Action Checkout
               uses: actions/checkout@v4
@@ -93,3 +95,8 @@ jobs:
               id: tf-validate
               run: terraform validate
               continue-on-error: false
+
+            - name: terraform Security Check
+              uses: aquasecurity/tfsec-pr-commenter-action@v1.2.0
+              with:
+                github_token: ${{ steps.get_actions_token.outputs.token }}
