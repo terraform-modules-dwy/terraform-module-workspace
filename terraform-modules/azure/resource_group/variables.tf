@@ -17,6 +17,8 @@ variable "location" {
 }
 
 variable "tags" {
-  default     = {}
-  description = "(Optional) tags for the resource group"
+  default     = {
+    "env"="development"
+  }
+  description = "(Optional) tags for the resource group."
 }
