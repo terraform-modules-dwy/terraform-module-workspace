@@ -25,7 +25,7 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_location"></a> [location](#input\_location) | (Required) Azure Region where the Resource Group should exist. Changing this forces a new Resource Group to be created. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | (Required) The Name which should be used for this Resource Group. Changing this forces a new Resource Group to be created. | `string` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | (Optional) tags specifying env. | `map` | `{}` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | (Optional) tags for the resource group | `map` | `{}` | no |
 
 ## Outputs
 
