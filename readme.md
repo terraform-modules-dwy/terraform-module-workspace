@@ -11,6 +11,28 @@
 - Github Apps should be created.
 - Github Apps should have a private key generated and should have appropriate permission for the repository so that it can be called
 - Configure the Github App id and private key in the repository secrets / it can be configure in the organization secrets.
+  
+###  Files: 📂
+- main.tf      - consist of resource block
+- variables.tf - it has all the necessary variable for the resource block
+- output.tf    - it contains output for a specific resource (which will be considered as the module outputs)
+- readme.md    - user created readme file
+- README.md    - Auto Create readme file - which has details about a complete module.
+- version.json - it has following details
+  
+    ```
+        {
+            "modules":[
+                {
+                    "name": <NAME OF REMOTE MODULE>,
+                    "version": <VERSION OF MODULE>,
+                    "project" : <PROJECT NAME>,
+                    "cloudprovider": <CLOUD PROVIDER NAME>
+                }
+            ]
+        }
+    ```
+  - In the above file you can increment the versions which will create separate modules as needed in terraform-remote-module repository
 
 ### Pipelines: 🔰
 | Workflow Name          | Description |
